@@ -1,7 +1,8 @@
-import FilterDropdown from '@/components/filter-dropdown';
-import OrdersTable from '@/components/orders-table';
-import Pagination from '@/components/pagination';
-import SearchInput from '@/components/search-input';
+import FilterDropdown from "@/components/filter-dropdown"
+import OrdersTable from "@/components/orders-table"
+import Pagination from "@/components/pagination"
+import SearchInput from "@/components/search-input"
+import axios from "axios"
 
 import {
   Card,
@@ -9,9 +10,15 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card"
 
 export default async function Component() {
+  const response = await axios.get(
+    "https://apis.codante.io/api/orders-api/orders"
+  )
+  const orders = response.data.data
+  console.log(orders)
+
   return (
     <main className="container px-1 py-10 md:p-10">
       <Card>
@@ -26,12 +33,12 @@ export default async function Component() {
           </div>
         </CardHeader>
         <CardContent>
-          <OrdersTable />
+          <OrdersTable orders={orders} />
           <div className="mt-8">
             <Pagination />
           </div>
         </CardContent>
       </Card>
     </main>
-  );
+  )
 }
