@@ -17,6 +17,7 @@ interface HomePageProps {
   searchParams?: {
     search?: string
     status?: string
+    sort?: string
   }
 }
 
@@ -27,6 +28,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       params: {
         search: searchParams?.search,
         status: searchParams?.status,
+        sort: searchParams?.sort,
       },
     }
   )

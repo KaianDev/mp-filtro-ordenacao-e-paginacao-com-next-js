@@ -1,3 +1,5 @@
+"use client"
+
 import type { Order } from "@/lib/types"
 import {
   Table,
@@ -9,6 +11,7 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "./ui/badge"
 import { ChevronsUpDown } from "lucide-react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 interface OrdersTableProps {
   orders: Order[]
@@ -19,20 +22,47 @@ const formatCurrency = new Intl.NumberFormat("pt-BR", {
   style: "currency",
 })
 
+enum SortKey {
+  amount = "amount_in_cents",
+  date = "order_date",
+}
+
 export default function OrdersTable({ orders }: OrdersTableProps) {
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+  const router = useRouter()
+
+  const handleSort = (key: SortKey) => {
+    const params = new URLSearchParams(searchParams)
+
+    if (params.get("sort") === key) {
+      params.set("sort", `-${key}`)
+    } else if (params.get("sort") === `-${key}`) {
+      params.delete("sort")
+    } else if (key) {
+      params.set("sort", key)
+    }
+
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }
+
   return (
     <Table>
       <TableHeader>
         <TableRow className="w-full">
           <TableHead className="table-cell">Cliente</TableHead>
           <TableHead className="table-cell">Status</TableHead>
-          <TableHead className="hidden md:table-cell cursor-pointer justify-end items-center gap-1">
+          <TableHead
+            className="hidden md:table-cell cursor-pointer justify-end items-center gap-1"
+            onClick={() => handleSort(SortKey.date)}>
             <div className="flex items-center gap-1">
               Data
               <ChevronsUpDown className="w-4" />
             </div>
           </TableHead>
-          <TableHead className="text-right cursor-pointer flex justify-end items-center gap-1">
+          <TableHead
+            className="text-right cursor-pointer flex justify-end items-center gap-1"
+            onClick={() => handleSort(SortKey.amount)}>
             Valor
             <ChevronsUpDown className="w-4" />
           </TableHead>
