@@ -1,8 +1,9 @@
+import axios from "axios"
+
 import FilterDropdown from "@/components/filter-dropdown"
 import OrdersTable from "@/components/orders-table"
 import Pagination from "@/components/pagination"
 import SearchInput from "@/components/search-input"
-import axios from "axios"
 
 import {
   Card,
@@ -15,6 +16,7 @@ import {
 interface HomePageProps {
   searchParams?: {
     search?: string
+    status?: string
   }
 }
 
@@ -24,6 +26,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     {
       params: {
         search: searchParams?.search,
+        status: searchParams?.status,
       },
     }
   )
