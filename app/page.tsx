@@ -1,4 +1,5 @@
 import axios from "axios"
+import type { PaginationLinks, PaginationMeta } from "@/lib/types"
 
 import FilterDropdown from "@/components/filter-dropdown"
 import OrdersTable from "@/components/orders-table"
@@ -18,6 +19,7 @@ interface HomePageProps {
     search?: string
     status?: string
     sort?: string
+    page?: number
   }
 }
 
@@ -29,10 +31,12 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         search: searchParams?.search,
         status: searchParams?.status,
         sort: searchParams?.sort,
+        page: searchParams?.page,
       },
     }
   )
   const orders = response.data.data
+  const meta = response.data.meta as PaginationMeta
 
   return (
     <main className="container px-1 py-10 md:p-10">
@@ -50,7 +54,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         <CardContent>
           <OrdersTable orders={orders} />
           <div className="mt-8">
-            <Pagination />
+            <Pagination meta={meta} />
           </div>
         </CardContent>
       </Card>

@@ -8,3 +8,17 @@ export interface Order {
   created_at: Date
   updated_at: Date
 }
+
+export interface PaginationLinks {
+  id: number
+  url: string
+  label: string
+  active: boolean
+}
+
+export interface PaginationMeta {
+  current_page: number
+  from: number
+  last_page: number
+  links: PaginationLinks[]
+}
